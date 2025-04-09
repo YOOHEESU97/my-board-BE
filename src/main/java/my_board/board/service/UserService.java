@@ -20,7 +20,7 @@ public class UserService {
             throw new RuntimeException("이미 가입된 이메일입니다.");
         }
 
-        my_board.board.entity.User user = my_board.board.entity.User.builder()
+        User user = User.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .nickname(dto.getNickname())
