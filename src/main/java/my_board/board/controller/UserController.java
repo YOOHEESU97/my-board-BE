@@ -1,9 +1,7 @@
-// ✅ UserController.java
 package my_board.board.controller;
 
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
-import my_board.board.dto.LoginRequestDto;
+import my_board.board.dto.LoginDto;
 import my_board.board.dto.UserRegisterDto;
 import my_board.board.entity.User;
 import my_board.board.jwt.JwtTokenProvider;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/users")
@@ -32,7 +29,6 @@ public class UserController {
 
     @GetMapping("/check-nickname")
     public ResponseEntity<?> checkNickname(@RequestParam("nickname") String nickname) {
-        System.out.print("닉네임 >> " + nickname);
         boolean isNickname = userRepository.existsByNickname(nickname);
         if (isNickname) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("중복된 닉네임입니다.");
@@ -41,14 +37,22 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto dto) {
+    public ResponseEntity<?> login(@RequestBody LoginDto dto) {
         User user = userService.authenticate(dto.getEmail(), dto.getPassword());
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
-        }
+        String token = jwtTokenProvider.createToken(user.getEmail(),  user.getRole() , user.getNickname());
+        return ResponseEntity.ok(token);
+    }
 
-        //String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
-        //return ResponseEntity.ok().body(Collection.singletonMap("token", token));
-        return ResponseEntity.ok("나중에 수정");
+    /*@PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        String refreshToken = extractRefreshTokenFromCookie(request);
+        
+        if(jwtTokenProvider.validateToken(refreshToken)) {
+            String email = jwtTokenProvider.getEmail(refreshToken);
+            String role = jwtTokenProvider.getRole(refreshToken);
+            String newAccessToken = jwtTokenProvider.createAccessToken(email,role);
+            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("RefreshToken 만료");*/
     }
 }

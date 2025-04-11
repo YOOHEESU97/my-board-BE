@@ -25,6 +25,7 @@ public class UserService {
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .nickname(dto.getNickname())
+                .role("ROLE_USER")
                 .build();
 
         userRepository.save(user);
@@ -35,5 +36,6 @@ public class UserService {
         if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        return user;
     }
 }
