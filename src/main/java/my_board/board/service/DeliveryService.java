@@ -1,35 +1,33 @@
 package my_board.board.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
+
 public class DeliveryService {
 
-    private final String SMART_API_KEY = "key"; // API 키 넣기
+    @Value("${smarttracker.key}")
+    private String SMART_API_KEY; // API 키 넣기
 
     public Object trackDelivery(String carrierCode, String invoiceNumber) {
-        String url = "https://info.sweettracker.co.kr/api/v1/trackingInfo";
+        String url = String.format(
+                "https://info.sweettracker.co.kr/api/v1/trackingInfo?t_key=%s&t_code=%s&t_invoice=%s",
+                SMART_API_KEY, carrierCode.trim(), invoiceNumber.trim()
+        );
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Accept", "application/json;charset=UTF-8");
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("t_key", SMART_API_KEY);
-        requestBody.put("t_code", carrierCode);
-        requestBody.put("t_invoice", invoiceNumber);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<Object> response = restTemplate.postForEntity(url, request, Object.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
         return response.getBody();
     }
+
 }

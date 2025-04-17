@@ -22,6 +22,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
         AntPathMatcher pathMatcher = new AntPathMatcher();
+
         // 로그인 및 회원가입은 토큰 검사 없이 통과
         if (pathMatcher.match("/api/login", path) || pathMatcher.match("/api/users/**", path)) {
             chain.doFilter(request, response);

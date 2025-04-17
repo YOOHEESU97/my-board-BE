@@ -14,3 +14,4 @@ build/
 
 # 기타
 out/
+**/application-local.properties

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class DeliveryController {
 
     private final DeliveryService deliveryService;
-    private final DeliveryRequestDto deliveryRequestDto;
+
     @PostMapping("/getTrackingDelivery")
     public ResponseEntity<?> getTracking(@RequestBody DeliveryRequestDto dto) {
         return ResponseEntity.ok(
