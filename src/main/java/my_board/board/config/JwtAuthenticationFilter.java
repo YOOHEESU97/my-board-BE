@@ -24,17 +24,19 @@ public class JwtAuthenticationFilter extends GenericFilter {
         AntPathMatcher pathMatcher = new AntPathMatcher();
 
         // 로그인 및 회원가입은 토큰 검사 없이 통과
-        if (pathMatcher.match("/api/login", path) || pathMatcher.match("/api/users/**", path)) {
+        if (pathMatcher.match("/api/login", path) || pathMatcher.match("/api/users/register",path) || pathMatcher.match("/api/users/reissue",path)) {
             chain.doFilter(request, response);
             return;
         }
 
         String token = resolveToken(httpRequest);
-
         if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             String email = jwtTokenProvider.getEmail(token);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null, null);
             SecurityContextHolder.getContext().setAuthentication(auth);
+        } else {
+            // 토큰 없을때
+            SecurityContextHolder.clearContext();
         }
         chain.doFilter(request,response);
     }

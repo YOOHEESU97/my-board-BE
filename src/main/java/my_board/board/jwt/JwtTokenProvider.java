@@ -16,14 +16,14 @@ public class JwtTokenProvider {
     private final SecretKey key = Keys.hmacShaKeyFor(
             "my-very-secret-key-must-be-32-bytes-long!".getBytes(StandardCharsets.UTF_8)
     );
-    // ✅ 토큰 생성
+    // ✅ 토큰 생성 3600000
     public String createToken(String email, String role, String nickname) {
         return Jwts.builder()
                 .subject(email)
                 .claim("role", role)
                 .claim("nickname", nickname)
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + 3600000))
+                .expiration(new Date((new Date()).getTime() + 1000 * 5))
                 .signWith(key)
                 .compact();
     }
@@ -44,6 +44,15 @@ public class JwtTokenProvider {
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
+    }
+
+    public String getNickname(String token) {
+        return Jwts.parser()
+                .verifyWith(key) // 서명 키 설정
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("nickname", String.class);
     }
 
     public String getRole(String token) {
@@ -67,6 +76,7 @@ public class JwtTokenProvider {
                     .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("토근 검증 실패: " + e.getClass().getSimpleName() + " - " + e.getMessage());
             return false;
         }
     }

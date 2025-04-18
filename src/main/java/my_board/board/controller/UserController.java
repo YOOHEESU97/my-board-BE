@@ -67,14 +67,15 @@ public class UserController {
     public ResponseEntity<?> reissue(@RequestBody TokenRequestDto dto) {
         String refreshToken = dto.getRefreshToken();
         String accessToken = dto.getAccessToken();
-        
+
         // 1. RefreshToken 유효성 검사
         if(!jwtTokenProvider.validateToken(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 리프레시 토큰입니다.");
         }
 
-        // 2. 이메일 추출
+        // 2. 정보 추출
         String email = jwtTokenProvider.getEmail(refreshToken);
+        String nickname = jwtTokenProvider.getNickname(refreshToken);
 
         // 3. DB에 저장된 refresh token과 일치하는지 확인
         RefreshToken saved = refreshTokenRepository.findById(email)
@@ -85,7 +86,7 @@ public class UserController {
         }
 
         // 4. 새 access token 발급
-        String newAccessToken = jwtTokenProvider.createToken(email, jwtTokenProvider.getRole(accessToken), null);
+        String newAccessToken = jwtTokenProvider.createToken(email, jwtTokenProvider.getRole(accessToken), nickname);
         return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
     }
 }
