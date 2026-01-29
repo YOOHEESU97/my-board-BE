@@ -1,45 +1,69 @@
+/**
+ * Gradle 빌드 설정 파일
+ * Spring Boot 게시판 애플리케이션의 의존성 및 빌드 구성을 정의
+ */
+
+// Gradle 플러그인 설정
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'java'  // Java 애플리케이션 빌드를 위한 기본 플러그인
+	id 'org.springframework.boot' version '3.4.4'  // Spring Boot 애플리케이션 빌드 및 실행
+	id 'io.spring.dependency-management' version '1.1.7'  // Spring Boot 의존성 버전 관리
 }
 
-group = 'my-board'
-version = '0.0.1-SNAPSHOT'
+// 프로젝트 메타데이터
+group = 'my-board'  // 프로젝트 그룹 ID
+version = '0.0.1-SNAPSHOT'  // 프로젝트 버전 (SNAPSHOT은 개발 중인 버전을 의미)
 
+// Java 버전 설정
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(17)  // Java 17 사용
 	}
 }
 
+// Lombok 설정
+// compileOnly 의존성이 annotationProcessor에 자동으로 추가되도록 설정
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
 
+// 의존성 저장소 설정
 repositories {
-	mavenCentral()
+	mavenCentral()  // Maven Central Repository에서 의존성 다운로드
 }
 
+// 프로젝트 의존성 정의
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+	// Spring Boot Starters
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA + Hibernate (데이터베이스 ORM)
+	implementation 'org.springframework.boot:spring-boot-starter-security'  // Spring Security (인증/인가)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'  // Bean Validation (데이터 검증)
+	implementation 'org.springframework.boot:spring-boot-starter-web'  // Spring MVC + REST API (웹 애플리케이션)
+	
+	// JSON 처리
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'  // JSON 직렬화/역직렬화
+	
+	// Lombok (코드 간소화: getter, setter, builder 등 자동 생성)
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+	
+	// 데이터베이스 드라이버
+	runtimeOnly 'com.mysql:mysql-connector-j'  // MySQL JDBC 드라이버
+	
+	// JWT (JSON Web Token) 라이브러리
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'  // JWT API (인터페이스)
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'  // JWT 구현체
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'  // JWT JSON 처리 (Jackson 기반)
+	
+	// 테스트 의존성
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // Spring Boot 테스트 지원
+	testImplementation 'org.springframework.security:spring-security-test'  // Spring Security 테스트 지원
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'  // JUnit 플랫폼 실행기
 }
 
+// 테스트 설정
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform()  // JUnit 5 플랫폼 사용
 }

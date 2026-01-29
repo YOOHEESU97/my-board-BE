@@ -1,18 +1,52 @@
+# Spring Boot 애플리케이션 설정 파일 (YAML 형식)
 spring:
+  # 데이터베이스 연결 설정
   datasource:
+    # MySQL 데이터베이스 URL
+    # - localhost:3306: 로컬 MySQL 서버 (포트 3306)
+    # - board_db: 데이터베이스 이름
+    # - serverTimezone=Asia/Seoul: 한국 시간대 설정 (날짜/시간 데이터 정확성)
     url: jdbc:mysql://localhost:3306/board_db?serverTimezone=Asia/Seoul
-    username: root         # 네 MySQL 사용자명
-    password: "1q2w3e4r!!"      # 네 비밀번호
+    
+    # MySQL 사용자 계정
+    username: root
+    
+    # MySQL 비밀번호 (보안: 실제 운영 환경에서는 환경변수나 암호화된 설정 사용 권장)
+    password: "1q2w3e4r!!"
+    
+    # MySQL JDBC 드라이버 클래스
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  # JPA (Java Persistence API) 설정
   jpa:
     hibernate:
-      ddl-auto: update     # 개발 중엔 update, 나중엔 validate
+      # DDL 자동 생성 전략
+      # - create: 기존 테이블 삭제 후 재생성 (데이터 손실 주의)
+      # - create-drop: create + 애플리케이션 종료 시 테이블 삭제
+      # - update: 기존 테이블 유지하며 변경사항만 반영 (개발 환경 권장)
+      # - validate: 엔티티와 테이블 일치 여부만 확인 (운영 환경 권장)
+      # - none: 아무 작업도 하지 않음
+      ddl-auto: update
+    
+    # SQL 쿼리 콘솔 출력 (개발 환경에서 디버깅용)
     show-sql: true
+    
     properties:
       hibernate:
+        # SQL 쿼리 가독성을 위한 포맷팅
         format_sql: true
 
-  # 서버 포트 (기본은 8080)
-  server:
-    port: 8080
+# 서버 설정
+server:
+  # 애플리케이션 서버 포트 (기본값: 8080)
+  port: 8080
+
+# Sweet Tracker API 설정 (택배 배송 조회)
+# https://info.sweettracker.co.kr/ 에서 API 키 발급 필요
+smarttracker:
+  key: "your_api_key_here"  # 실제 API 키로 교체 필요
+
+# RapidAPI 설정 (축구 경기 정보 조회) - 선택사항
+# FootballController에서 사용하려면 주석 해제하고 키 입력
+# rapidapi:
+#   key: "your_rapidapi_key_here"
