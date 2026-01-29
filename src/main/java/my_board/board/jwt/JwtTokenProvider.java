@@ -12,14 +12,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
- * JWT(JSON Web Token) 토큰 생성 및 검증을 담당하는 프로바이더
+ * JWT(JSON Web Token) 토큰 생성 및 검증
  * - Access Token 및 Refresh Token 생성
  * - 토큰에서 사용자 정보(이메일, 닉네임, 권한) 추출
  * - 토큰 유효성 검증
- * 
- * @Component: Spring Bean으로 등록
- * 
- * 주의: Secret Key는 환경변수나 설정 파일에서 관리하는 것을 권장
  */
 @Component
 public class JwtTokenProvider {
@@ -28,7 +24,7 @@ public class JwtTokenProvider {
      * TODO: 실제 운영 환경에서는 application.yml이나 환경변수에서 관리 필요
      */
     private final SecretKey key = Keys.hmacShaKeyFor(
-            "my-very-secret-key-must-be-32-bytes-long!".getBytes(StandardCharsets.UTF_8)
+            "my-very-secret-key".getBytes(StandardCharsets.UTF_8)
     );
     
     /**
