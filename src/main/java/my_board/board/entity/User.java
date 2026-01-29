@@ -23,7 +23,6 @@ public class User {
 
     /**
      * 사용자 고유 식별자 (Primary Key)
-     * 데이터베이스에서 자동 증가(AUTO_INCREMENT)로 생성
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

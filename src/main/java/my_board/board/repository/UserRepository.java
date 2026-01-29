@@ -7,15 +7,6 @@ import java.util.Optional;
 
 /**
  * User 엔티티에 대한 데이터 접근 계층 (Repository)
- * JpaRepository를 상속하여 기본 CRUD 기능 제공
- * 
- * 기본 제공 메서드:
- * - save(User): 사용자 저장 또는 수정
- * - findById(Long): ID로 사용자 조회
- * - findAll(): 모든 사용자 조회
- * - delete(User): 사용자 삭제
- * - count(): 사용자 수 조회
- * 등...
  */
 public interface UserRepository extends JpaRepository<User, Long> {
     

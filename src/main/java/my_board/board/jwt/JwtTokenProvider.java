@@ -21,15 +21,12 @@ import java.util.Date;
 public class JwtTokenProvider {
     /**
      * JWT 서명에 사용되는 비밀 키
-     * TODO: 실제 운영 환경에서는 application.yml이나 환경변수에서 관리 필요
+     * application.yml에 선언 KEY 명 바꿔야함
      */
     private final SecretKey key = Keys.hmacShaKeyFor(
             "my-very-secret-key-must-be-32-bytes-long!".getBytes(StandardCharsets.UTF_8)
     );
-    
-    /**
-     * Access Token 유효 시간: 1시간 (3600000ms)
-     */
+
     private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60;
 
     /**
@@ -131,8 +128,6 @@ public class JwtTokenProvider {
      * 
      * @param token 검증할 JWT 토큰 문자열
      * @return 토큰이 유효하면 true, 아니면 false
-     * 
-     * TODO: 실제 운영 환경에서는 SLF4J 같은 로깅 프레임워크 사용 권장
      */
     public boolean validateToken(String token) {
         try {

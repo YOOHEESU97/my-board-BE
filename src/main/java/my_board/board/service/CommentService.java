@@ -18,10 +18,6 @@ import java.util.List;
  * 댓글 관련 비즈니스 로직을 처리하는 서비스
  * - 댓글 작성 (일반 댓글 및 대댓글)
  * - 댓글 목록 조회
- * 
- * @Service: Spring의 서비스 계층 컴포넌트로 등록
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
- * @Transactional: 클래스 레벨에 선언하여 모든 public 메서드에 트랜잭션 적용
  */
 @Service
 @RequiredArgsConstructor

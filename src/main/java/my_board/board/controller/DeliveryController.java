@@ -19,12 +19,9 @@ public class DeliveryController {
 
     /**
      * 택배 배송 조회 API
-     * 
-     * Sweet Tracker API를 호출하여 실시간 택배 배송 정보를 조회
+     * 스마트택배 API를 호출하여 실시간 택배 배송 정보를 조회
      * 택배사 코드와 송장번호를 입력받아 배송 현황을 반환
-     * 
-     * 엔드포인트: POST /api/getTrackingDelivery
-     * 
+     * POST /api/getTrackingDelivery
      * @param dto 택배 조회 정보 (carrier: 택배사 코드, invoice: 송장번호)
      * @return 200 OK - Sweet Tracker API 응답 JSON
      */

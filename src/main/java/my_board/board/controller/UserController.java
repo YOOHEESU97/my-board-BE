@@ -19,21 +19,13 @@ import java.util.Map;
 
 /**
  * 사용자 관련 REST API 컨트롤러
- * - 회원가입, 로그인, 닉네임 중복 확인, 토큰 재발급 등의 엔드포인트 제공
- * 
- * @RestController: @Controller + @ResponseBody
- *   모든 메서드의 반환값을 HTTP 응답 본문에 직접 작성 (JSON 변환)
- * @RequestMapping: 기본 경로를 "/api/users"로 설정
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
+ * - 회원가입, 로그인, 닉네임 중복 확인, 토큰 재발급
  */
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    /**
-     * 사용자 비즈니스 로직 처리
-     */
     private final UserService userService;
     
     /**
@@ -70,7 +62,7 @@ public class UserController {
      * 닉네임 중복 확인 API
      * 회원가입 시 실시간으로 닉네임 중복을 체크
      * 
-     * 엔드포인트: GET /api/users/check-nickname?nickname=홍길동
+     * GET /api/users/check-nickname?nickname=홍길동
      * 
      * @param nickname 확인할 닉네임
      * @return 200 OK - 사용 가능한 닉네임

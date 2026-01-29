@@ -15,25 +15,16 @@ import java.io.IOException;
  * JWT 인증 필터
  * HTTP 요청의 Authorization 헤더에서 JWT 토큰을 추출하고 검증하여
  * Spring Security의 SecurityContext에 인증 정보를 설정
- * 
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성
  */
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilter {
 
-    /**
-     * JWT 토큰 생성 및 검증을 담당하는 프로바이더
-     */
     private final JwtTokenProvider jwtTokenProvider;
-    
-    /**
-     * URL 패턴 매칭을 위한 Ant 스타일 경로 매처
-     */
+
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     /**
      * 요청을 필터링하여 JWT 토큰 기반 인증을 처리
-     * 
      * 처리 순서:
      * 1. 공개 경로(로그인, 회원가입 등)인지 확인
      * 2. Authorization 헤더에서 JWT 토큰 추출

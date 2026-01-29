@@ -45,14 +45,11 @@ public class Post {
 
     /**
      * 작성자 이메일
-     * User 테이블과 연관관계를 맺지 않고 단순 문자열로 저장
-     * (성능 최적화 및 단순화를 위한 설계)
      */
     private String email;
 
     /**
      * 작성자 닉네임
-     * 게시글 조회 시 JOIN 없이 바로 표시하기 위해 비정규화
      */
     private String nickname;
 

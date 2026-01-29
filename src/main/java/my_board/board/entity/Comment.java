@@ -33,36 +33,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 댓글이 속한 게시글 (Many-to-One 관계)
-     * - LAZY 로딩: 댓글 조회 시 게시글은 필요할 때만 로딩
-     * - nullable = false: 댓글은 반드시 게시글에 속해야 함
-     * 
-     * 외래키: post_id
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    /**
-     * 댓글 작성자 (Many-to-One 관계)
-     * - LAZY 로딩: 댓글 조회 시 사용자는 필요할 때만 로딩
-     * - nullable = false: 댓글은 반드시 작성자가 있어야 함
-     * 
-     * 외래키: user_id
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    /**
-     * 부모 댓글 (대댓글인 경우, Self-Referencing Many-to-One)
-     * - LAZY 로딩: 필요할 때만 부모 댓글 로딩
-     * - nullable = true: 최상위 댓글인 경우 부모가 없음
-     * 
-     * 외래키: parent_id
-     * null이면 최상위 댓글, 값이 있으면 대댓글(답글)
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
@@ -91,8 +69,7 @@ public class Comment {
     private Boolean deleted = false;
 
     /**
-     * 댓글 생성을 위한 정적 팩토리 메서드
-     * 생성자 대신 의미있는 메서드명으로 객체 생성
+     * 댓글 생성
      * 
      * @param post    댓글이 속한 게시글
      * @param user    댓글 작성자
