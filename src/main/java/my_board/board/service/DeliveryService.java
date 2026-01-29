@@ -10,9 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * 택배 배송 조회 서비스
- * Sweet Tracker API를 사용하여 택배 배송 정보를 조회
+ * 스마트택배 API를 사용하여 택배 배송 정보를 조회
  * 
- * API 문서: https://info.sweettracker.co.kr/
+ * API 문서: https://tracking.sweettracker.co.kr:8443/templates/app.html#/
  * 
  * @Service: Spring의 서비스 계층 컴포넌트로 등록
  * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
@@ -22,38 +22,29 @@ import org.springframework.web.client.RestTemplate;
 public class DeliveryService {
 
     /**
-     * Sweet Tracker API 키
-     * application.yml 또는 application.properties에서 주입
-     * 예: smarttracker.key=your_api_key_here
+     * 스마트택배 API 키
+     * Git에 올릴때 노출되지않게 application.properties에서 주입
      */
     @Value("${smarttracker.key}")
     private String SMART_API_KEY;
     
     /**
      * HTTP 통신을 위한 RestTemplate
-     * 생성자 주입을 통해 Bean으로 주입받음 (매번 생성하는 것보다 효율적)
      */
     private final RestTemplate restTemplate;
 
     /**
      * 택배 배송 조회
      * 
-     * Sweet Tracker API를 호출하여 택배 배송 정보를 조회
+     * 스마트택배 API를 호출하여 택배 배송 정보를 조회
      * - 택배사 코드와 송장번호로 배송 현황 조회
      * - 실시간 배송 위치 및 배송 단계 정보 제공
      * 
      * @param carrierCode   택배사 코드 (예: "04" - CJ대한통운, "05" - 한진택배)
      * @param invoiceNumber 송장번호
      * @return Sweet Tracker API 응답 JSON 문자열
-     * 
-     * API 응답 예시:
-     * {
-     *   "status": true,
-     *   "trackingDetails": [...],
-     *   "receiverName": "홍길동",
-     *   ...
-     * }
      */
+    
     public Object trackDelivery(String carrierCode, String invoiceNumber) {
         // API URL 생성 (쿼리 파라미터 포함)
         String url = String.format(

@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
      * @param request  클라이언트 요청
      * @param response 서버 응답
      * @param chain    필터 체인
-     * @throws IOException      입출력 예외
+     * @throws IOException 입출력 예외
      * @throws ServletException 서블릿 예외
      */
     @Override

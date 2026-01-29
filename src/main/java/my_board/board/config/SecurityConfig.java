@@ -24,10 +24,6 @@ import java.util.List;
  * - JWT 기반 인증/인가 설정
  * - CORS 설정
  * - 비밀번호 암호화 설정
- * 
- * @Configuration: Spring 설정 클래스로 등록
- * @EnableWebSecurity: Spring Security 활성화
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
  */
 @Configuration
 @EnableWebSecurity
@@ -35,13 +31,13 @@ import java.util.List;
 public class SecurityConfig {
 
     /**
-     * JWT 토큰 생성 및 검증을 담당하는 프로바이더
+     * JWT 토큰 생성 및 검증을 담당하는 Provider
      */
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * CORS(Cross-Origin Resource Sharing) 설정
-     * 프론트엔드(http://localhost:5173)에서 백엔드 API 호출을 허용하기 위한 설정
+     * 프론트엔드(로컬포트 > 5173)에서 백엔드 API 호출을 허용하기 위한 설정
      * 
      * @return CORS 설정이 적용된 CorsConfigurationSource 객체
      */
@@ -67,11 +63,7 @@ public class SecurityConfig {
     /**
      * Spring Security 필터 체인 설정
      * - JWT 기반 인증/인가 처리
-     * - 공개 API와 보호 API 구분
-     * 
      * @param http HttpSecurity 설정 객체
-     * @return 구성된 SecurityFilterChain
-     * @throws Exception 설정 중 발생할 수 있는 예외
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
