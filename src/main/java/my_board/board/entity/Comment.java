@@ -82,6 +82,15 @@ public class Comment {
     private LocalDateTime createdAt;
 
     /**
+     * 댓글 삭제 여부
+     * true면 삭제된 댓글, false면 정상 댓글
+     * 기본값: false
+     */
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean deleted = false;
+
+    /**
      * 댓글 생성을 위한 정적 팩토리 메서드
      * 생성자 대신 의미있는 메서드명으로 객체 생성
      * 
@@ -98,6 +107,16 @@ public class Comment {
                 .parent(parent)
                 .content(content)
                 .createdAt(LocalDateTime.now())
+                .deleted(false)
                 .build();
+    }
+
+    /**
+     * 댓글을 삭제 처리 (Soft Delete)
+     * 실제로 DB에서 삭제하지 않고, 내용을 "삭제 처리 된 댓글입니다."로 변경하고 deleted 플래그를 true로 설정
+     */
+    public void markAsDeleted() {
+        this.content = "삭제 처리 된 댓글입니다.";
+        this.deleted = true;
     }
 }

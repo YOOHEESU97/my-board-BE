@@ -72,4 +72,33 @@ public class CommentController {
         CommentResponseDto result = commentService.addComment(postId, email, dto);
         return ResponseEntity.ok(result);
     }
+
+    /**
+     * 댓글 삭제 API (Soft Delete)
+     * JWT 인증이 필요한 엔드포인트
+     * 
+     * 실제로 DB에서 삭제하지 않고, 내용을 "삭제 처리 된 댓글입니다."로 변경
+     * 
+     * 엔드포인트: DELETE /api/posts/{postId}/comments/{commentId}
+     * 
+     * @param postId         게시글 ID (URL 경로에서 추출)
+     * @param commentId      삭제할 댓글 ID (URL 경로에서 추출)
+     * @param authentication Spring Security의 인증 객체
+     * @return 200 OK - 삭제 성공 메시지
+     *         401 Unauthorized - 인증되지 않은 경우
+     *         403 Forbidden - 본인이 작성한 댓글이 아닌 경우
+     */
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<?> deleteComment(
+            @PathVariable("postId") Long postId,
+            @PathVariable("commentId") Long commentId,
+            Authentication authentication
+    ) {
+        // JWT 필터에서 SecurityContext에 설정한 사용자 이메일 추출
+        String email = (String) authentication.getPrincipal();
+        
+        // 댓글 삭제 (Soft Delete)
+        commentService.deleteComment(commentId, email);
+        return ResponseEntity.ok("댓글이 삭제되었습니다.");
+    }
 }

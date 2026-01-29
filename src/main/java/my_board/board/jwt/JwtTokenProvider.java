@@ -24,7 +24,7 @@ public class JwtTokenProvider {
      * TODO: 실제 운영 환경에서는 application.yml이나 환경변수에서 관리 필요
      */
     private final SecretKey key = Keys.hmacShaKeyFor(
-            "my-very-secret-key".getBytes(StandardCharsets.UTF_8)
+            "my-very-secret-key-must-be-32-bytes-long!".getBytes(StandardCharsets.UTF_8)
     );
     
     /**

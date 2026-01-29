@@ -55,4 +55,10 @@ public class CommentResponseDto {
      */
     private LocalDateTime createdAt;
 
+    /**
+     * 댓글 삭제 여부
+     * true면 삭제된 댓글, false면 정상 댓글
+     */
+    private Boolean deleted;
+
 }

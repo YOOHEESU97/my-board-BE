@@ -117,7 +117,30 @@ public class CommentService {
                         .writerNickname(c.getUser().getNickname())
                         .writerEmail(c.getUser().getEmail())
                         .createdAt(c.getCreatedAt())
+                        .deleted(c.getDeleted())
                         .build())
                 .toList();
+    }
+
+    /**
+     * 댓글 삭제 (Soft Delete)
+     * 실제로 DB에서 삭제하지 않고, 내용을 "삭제 처리 된 댓글입니다."로 변경
+     * 
+     * @param commentId 삭제할 댓글 ID
+     * @param userEmail 삭제를 요청한 사용자 이메일
+     * @throws IllegalArgumentException 댓글을 찾을 수 없거나, 작성자가 아닌 경우
+     */
+    public void deleteComment(Long commentId, String userEmail) {
+        // 댓글 조회 및 검증
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+
+        // 작성자 본인인지 확인 (보안 체크)
+        if (!comment.getUser().getEmail().equals(userEmail)) {
+            throw new IllegalArgumentException("본인이 작성한 댓글만 삭제할 수 있습니다.");
+        }
+
+        // Soft Delete: 내용을 "삭제 처리 된 댓글입니다."로 변경
+        comment.markAsDeleted();
     }
 }
