@@ -75,7 +75,9 @@ public class UserController {
 
         // 2. 정보 추출
         String email = jwtTokenProvider.getEmail(refreshToken);
-        String nickname = jwtTokenProvider.getNickname(refreshToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        String nickname = user.getNickname(); // ✅ 여기서 꺼냄
 
         // 3. DB에 저장된 refresh token과 일치하는지 확인
         RefreshToken saved = refreshTokenRepository.findById(email)

@@ -16,6 +16,8 @@ public class JwtTokenProvider {
     private final SecretKey key = Keys.hmacShaKeyFor(
             "my-very-secret-key-must-be-32-bytes-long!".getBytes(StandardCharsets.UTF_8)
     );
+    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60;
+
     // ✅ 토큰 생성 3600000
     public String createToken(String email, String role, String nickname) {
         return Jwts.builder()
@@ -23,7 +25,7 @@ public class JwtTokenProvider {
                 .claim("role", role)
                 .claim("nickname", nickname)
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + 1000 * 5))
+                .expiration(new Date((new Date()).getTime() + ACCESS_TOKEN_VALIDITY))
                 .signWith(key)
                 .compact();
     }
@@ -47,12 +49,16 @@ public class JwtTokenProvider {
     }
 
     public String getNickname(String token) {
+        try{
         return Jwts.parser()
                 .verifyWith(key) // 서명 키 설정
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .get("nickname", String.class);
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().get("nickname", String.class);
+        }
     }
 
     public String getRole(String token) {
@@ -75,9 +81,13 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("토근 검증 실패: " + e.getClass().getSimpleName() + " - " + e.getMessage());
-            return false;
+        } catch (ExpiredJwtException e) {
+            System.out.println("토큰 검증 실패: 만료됨 - " + e.getMessage());
+        } catch (JwtException e) {
+            System.out.println("토큰 검증 실패: 기타 JWT 예외 - " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("토큰 검증 실패: 잘못된 인자 - " + e.getMessage());
         }
+        return false;
     }
 }
