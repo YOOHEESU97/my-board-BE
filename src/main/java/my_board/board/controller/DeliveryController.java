@@ -23,7 +23,7 @@ public class DeliveryController {
      * 택배사 코드와 송장번호를 입력받아 배송 현황을 반환
      * POST /api/getTrackingDelivery
      * @param dto 택배 조회 정보 (carrier: 택배사 코드, invoice: 송장번호)
-     * @return 200 OK - Sweet Tracker API 응답 JSON
+     * @return 200 OK - 스마트택배 API 응답 JSON
      */
     @PostMapping("/getTrackingDelivery")
     public ResponseEntity<?> getTracking(@RequestBody DeliveryRequestDto dto) {

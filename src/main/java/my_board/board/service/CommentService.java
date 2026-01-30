@@ -53,7 +53,6 @@ public class CommentService {
      * @param userEmail 댓글 작성자 이메일
      * @param dto       댓글 내용 및 부모 댓글 ID (대댓글인 경우)
      * @return 생성된 댓글 정보
-     * @throws IllegalArgumentException 게시글, 사용자, 부모 댓글을 찾을 수 없는 경우
      */
     public CommentResponseDto addComment(Long postId, String userEmail, CommentRequestDto dto) {
         // 게시글 조회 및 검증
@@ -89,14 +88,10 @@ public class CommentService {
 
     /**
      * 특정 게시글의 모든 댓글 조회
-     * 
-     * @Transactional(readOnly = true): 
+     * Transactional
      * - 읽기 전용 트랜잭션으로 성능 최적화
-     * - 변경 감지(Dirty Checking) 비활성화
-     * - 데이터베이스에 따라 읽기 전용 최적화 적용
-     * 
-     * @param postId 조회할 게시글 ID
-     * @return 댓글 리스트 (작성 시간 오름차순 정렬)
+     * @param postId 게시글 ID
+     * @return 댓글 리스트
      */
     @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments(Long postId) {
@@ -119,12 +114,9 @@ public class CommentService {
     }
 
     /**
-     * 댓글 삭제 (Soft Delete)
-     * 실제로 DB에서 삭제하지 않고, 내용을 "삭제 처리 된 댓글입니다."로 변경
-     * 
+     * 댓글 삭제
      * @param commentId 삭제할 댓글 ID
      * @param userEmail 삭제를 요청한 사용자 이메일
-     * @throws IllegalArgumentException 댓글을 찾을 수 없거나, 작성자가 아닌 경우
      */
     public void deleteComment(Long commentId, String userEmail) {
         // 댓글 조회 및 검증

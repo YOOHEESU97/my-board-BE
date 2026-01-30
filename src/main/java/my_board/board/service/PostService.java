@@ -12,17 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
  * 게시글 관련 비즈니스 로직을 처리하는 서비스
  * - 게시글 작성
  * - 게시글 수정
- * 
- * @Service: Spring의 서비스 계층 컴포넌트로 등록
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
  */
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-    /**
-     * 게시글 데이터 접근을 위한 Repository
-     */
     private final PostRepository postRepository;
 
     /**
@@ -45,15 +39,8 @@ public class PostService {
 
     /**
      * 게시글 수정
-     * 
-     * JPA 영속성 컨텍스트의 변경 감지(Dirty Checking) 기능을 활용
-     * - @Transactional 내에서 엔티티를 조회하고 필드를 변경하면
-     * - 트랜잭션 커밋 시점에 자동으로 UPDATE 쿼리가 실행됨
-     * - 명시적인 save() 호출 불필요
-     * 
      * @param id  수정할 게시글 ID
      * @param dto 수정할 내용 (제목, 내용)
-     * @throws IllegalArgumentException 게시글을 찾을 수 없는 경우
      */
     @Transactional
     public void update(Long id, PostUpdateDto dto) {

@@ -11,11 +11,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * 택배 배송 조회 서비스
  * 스마트택배 API를 사용하여 택배 배송 정보를 조회
- * 
  * API 문서: https://tracking.sweettracker.co.kr:8443/templates/app.html#/
- * 
- * @Service: Spring의 서비스 계층 컴포넌트로 등록
- * @RequiredArgsConstructor: final 필드에 대한 생성자 자동 생성 (DI)
  */
 @Service
 @RequiredArgsConstructor
@@ -27,15 +23,11 @@ public class DeliveryService {
      */
     @Value("${smarttracker.key}")
     private String SMART_API_KEY;
-    
-    /**
-     * HTTP 통신을 위한 RestTemplate
-     */
+
     private final RestTemplate restTemplate;
 
     /**
      * 택배 배송 조회
-     * 
      * 스마트택배 API를 호출하여 택배 배송 정보를 조회
      * - 택배사 코드와 송장번호로 배송 현황 조회
      * - 실시간 배송 위치 및 배송 단계 정보 제공

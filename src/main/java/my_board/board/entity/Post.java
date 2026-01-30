@@ -1,19 +1,16 @@
 package my_board.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 게시글(Post) 엔티티
  * 사용자가 작성한 게시글 정보를 저장하는 테이블과 매핑
- * 
- * @Entity: JPA 엔티티로 지정
- * @Getter/@Setter: Lombok을 통한 getter/setter 자동 생성
- * @NoArgsConstructor: 기본 생성자 자동 생성 (JPA 요구사항)
- * @AllArgsConstructor: 모든 필드를 포함하는 생성자 자동 생성
- * @Builder: 빌더 패턴 지원 (객체 생성 편의성)
  */
 @Entity
 @Getter
@@ -58,6 +55,13 @@ public class Post {
      * LocalDateTime 타입으로 저장 (년-월-일 시:분:초)
      */
     private LocalDateTime createAt;
+
+    /**
+     * 게시글에 달린 댓글 리스트
+     */
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 
     /**
      * 엔티티가 처음 저장되기 전에 자동으로 호출되는 메서드

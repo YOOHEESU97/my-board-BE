@@ -122,22 +122,16 @@ public class UserController {
     }
 
     /**
-     * Access Token 재발급 API
-     * 
-     * Access Token이 만료되었을 때 Refresh Token을 사용하여 새 Access Token을 발급
-     * 
+     * AccessToken 재발급 API
+     * AccessToken 만료되었을 때 RefreshToken을 사용하여 새 AccessToken을 발급
      * 처리 과정:
-     * 1. Refresh Token 유효성 검증
-     * 2. Refresh Token에서 사용자 이메일 추출
-     * 3. 데이터베이스에 저장된 Refresh Token과 비교 검증
-     * 4. 기존 Access Token에서 권한 정보 추출
-     * 5. 새로운 Access Token 생성 및 반환
-     * 
-     * 엔드포인트: POST /api/users/reissue
-     * 
-     * @param dto Access Token과 Refresh Token
-     * @return 200 OK - 새로운 Access Token
-     *         401 Unauthorized - Refresh Token이 유효하지 않거나 일치하지 않는 경우
+     * 1. RefreshToken 유효성 검증
+     * 2. RefreshToken에서 사용자 이메일 추출
+     * 3. 데이터베이스에 저장된 Refresh oken과 비교 검증
+     * 4. 기존 AccessToken에서 권한 정보 추출
+     * 5. 새로운 AccessToken 생성 및 반환
+     * POST /api/users/reissue
+
      */
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@RequestBody TokenRequestDto dto) {

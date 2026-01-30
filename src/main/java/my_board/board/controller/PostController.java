@@ -25,13 +25,10 @@ import java.util.Optional;
 @Transactional
 public class PostController {
 
-    /**
-     * 게시글 비즈니스 로직 처리
-     */
     private final PostService postService;
     
     /**
-     * 게시글 데이터 접근 (조회 및 삭제 시 직접 사용)
+     * 게시글(조회 및 삭제 시)
      */
     private final PostRepository postRepository;
 
@@ -39,8 +36,7 @@ public class PostController {
      * 게시글 작성 API
      * JWT 인증이 필요한 엔드포인트 (SecurityConfig에서 설정)
      * POST /api/create-posts
-     * @param dto 게시글 정보 (제목, 내용, 작성자 이메일, 닉네임)
-     * @return 200 OK - 게시글 작성 성공 메시지
+     * dto 게시글 정보 (제목, 내용, 작성자 이메일, 닉네임)
      */
     @PostMapping("/create-posts")
     public ResponseEntity<?> createPost(@RequestBody PostDto dto) {
@@ -51,8 +47,7 @@ public class PostController {
     /**
      * 전체 게시글 목록 조회 API
      * 인증 없이 접근 가능 (공개 API)
-     GET /api/getPosts
-     * @return 200 OK - 게시글 리스트 (작성 시간 내림차순 정렬)
+     * GET /api/getPosts
      */
     @GetMapping("/getPosts")
     public ResponseEntity<List<Post>> getAllPosts() {
@@ -65,9 +60,6 @@ public class PostController {
      * 특정 게시글 상세 조회 API
      * 인증 없이 접근 가능 (공개 API)
      * GET /api/posts/{id}
-     * @param id 조회할 게시글 ID
-     * @return 200 OK - 게시글 상세 정보
-     *         404 Not Found - 게시글을 찾을 수 없음
      */
     @GetMapping("/posts/{id}")
     public ResponseEntity<?> getPostById(@PathVariable("id") Long id) {
@@ -83,10 +75,8 @@ public class PostController {
      * 게시글 수정 API
      * JWT 인증이 필요한 엔드포인트
      * PUT /api/posts/{id}
-     * @param id  수정할 게시글 ID
-     * @param dto 수정할 내용 (제목, 내용)
-     * @return 200 OK - 수정 완료 메시지
-     *         404 Not Found - 게시글을 찾을 수 없음
+     * id  수정할 게시글 ID
+     * dto 수정할 내용 (제목, 내용)
      */
     @PutMapping("/posts/{id}")
     public ResponseEntity<?> updatePost(
@@ -101,10 +91,7 @@ public class PostController {
      * 게시글 삭제 API
      * JWT 인증이 필요한 엔드포인트
      * DELETE /api/posts/{id}
-     * @param id 삭제할 게시글 ID
-     * @return 200 OK - 삭제 완료 메시지
-     *         404 Not Found - 게시글을 찾을 수 없음
-     *         500 Internal Server Error - 삭제 실패 (드문 경우)
+     * id 삭제할 게시글 ID
      */
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<?> deletePost(@PathVariable("id") Long id) {

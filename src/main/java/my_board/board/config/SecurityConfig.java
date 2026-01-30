@@ -70,11 +70,11 @@ public class SecurityConfig {
         http
                 // HTTP Basic 인증 비활성화 (JWT 사용)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                // CSRF 보호 비활성화 (REST API에서는 불필요)
+                // CSRF 보호 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
-                // CORS 활성화 (위에서 정의한 설정 사용)
+                // CORS 설정 사용
                 .cors(Customizer.withDefaults())
-                // 요청에 대한 인가 규칙 설정
+                // 요청에 대한 접근 규칙 설정
                 .authorizeHttpRequests(auth -> auth
                         // 인증 없이 접근 가능한 엔드포인트 (로그인, 회원가입, 닉네임 중복 확인, 토큰 재발급)
                         .requestMatchers("/api/users/login", "/api/users/register", "/api/users/check-nickname", "/api/users/reissue").permitAll()
@@ -83,7 +83,6 @@ public class SecurityConfig {
                         // 그 외 모든 요청은 인증 필요
                         .anyRequest().authenticated()
                 )
-                // JWT 인증 필터를 UsernamePasswordAuthenticationFilter 앞에 추가
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
