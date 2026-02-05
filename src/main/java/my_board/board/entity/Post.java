@@ -58,6 +58,9 @@ public class Post {
 
     /**
      * 게시글에 달린 댓글 리스트
+     * OneToMany -> post에 여러개 댓글(comment) 달림
+     * cascade -> post 지우면 댓글도 지워져야되기때문에 씀
+     * orphanRemoval DB에서 삭제됨
      */
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore

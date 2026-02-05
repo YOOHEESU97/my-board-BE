@@ -77,7 +77,7 @@ public class JwtTokenProvider {
                 .build()
                 .parseSignedClaims(token)     // 토큰 파싱
                 .getPayload()
-                .getSubject();                // subject(이메일) 반환
+                .getSubject();                // 이메일 반환
     }
 
     /**
